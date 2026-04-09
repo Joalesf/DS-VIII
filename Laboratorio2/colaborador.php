@@ -1,23 +1,28 @@
 <?php
-
-abstract class colaborador {
+//Integrantes
+//Richard Rdriguez
+//Edgar Rosario
+//Jose Sanchez
+abstract class Colaborador {
     protected $nombre;
     protected $salarioBase;
-    protected $id;
+    private $identificacion;
 
-    public function __construct($nombre, $salarioBase, $id) {
+    public function __construct($nombre, $salarioBase, $identificacion) {
         $this->nombre = $nombre;
         $this->salarioBase = $salarioBase;
-        $this->id = $id;
+        $this->identificacion = $identificacion;
     }
 
     abstract public function calcularSalario();
+    abstract public function getTipo();
 
-    public function getNombre() {
-        return $this->nombre;
-    }
-
-    public function getId() {
-        return $this->id;
+    public function mostrarInformacion() {
+        echo "Tipo de Contrato: " . $this->getTipo() . "<br>";
+        echo "Nombre: " . $this->nombre . "<br>";
+        echo "ID: " . $this->identificacion . "<br>";
+        echo "Salario: $" . $this->calcularSalario() . "<br>";
+        echo "--------------------------<br>";
     }
 }
+?>

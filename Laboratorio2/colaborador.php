@@ -13,7 +13,7 @@ abstract class Colaborador {
         $this->salarioBase = $salarioBase;
         $this->identificacion = $identificacion;
     }
-
+3
     abstract public function calcularSalario();
     abstract public function getTipo();
 

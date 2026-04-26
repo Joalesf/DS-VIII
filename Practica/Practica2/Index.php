@@ -2,6 +2,9 @@
 require_once 'Config/DevsConf.php';
 require_once 'Models/Libro.php';
 require_once 'Controlador/Librocontroller.php';
+//José Sánchez 
+//Ricardo Rodirguez
+//Edgar Rosario
 
 $controlador = new LibroController();
 $accion = isset($_GET['accion']) ? $_GET['accion'] : 'listar';

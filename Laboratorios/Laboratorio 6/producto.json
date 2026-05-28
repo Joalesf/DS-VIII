@@ -1,0 +1,18 @@
+{
+    "P001": {
+        "codigo": "P001",
+        "nombre": "Producto 1",
+        "marca": "Marca A",
+        "precio": 10.99,
+        "cantidad": 100,
+        "categoria": "Categoría A"
+    },
+    "P002": {
+        "codigo": "P002",
+        "nombre": "Producto 2",
+        "marca": "Marca B",
+        "precio": 15.49,
+        "cantidad": 50,
+        "categoria": "Categoría B"
+    }
+}

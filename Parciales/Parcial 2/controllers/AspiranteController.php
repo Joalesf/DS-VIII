@@ -2,7 +2,7 @@
 
 require_once ROOT_PATH . '/models/Aspirante.php';
 
-class AspiranteController
+class ControladorAspirante
 {
     public function index()
     {
@@ -16,11 +16,11 @@ class AspiranteController
             exit;
         }
 
-        $title = 'Mi solicitud';
+        $titulo = 'Mi solicitud';
         $errores = array();
         $mensaje = '';
         $usuarioId = (int) $_SESSION['usuario_id'];
-        $modeloAspirante = new Aspirante();
+        $modeloAspirante = new ModeloAspirante();
         $solicitud = $modeloAspirante->obtenerPorUsuario($usuarioId);
         $datos = $solicitud ? $solicitud : $this->datosVacios();
         $estadoSolicitud = $solicitud ? $solicitud['estado_solicitud'] : 'no revisado';
@@ -80,7 +80,7 @@ class AspiranteController
         );
     }
 
-    private function validarDatos($datos)
+    private function validarDatos(array $datos): array
     {
         $errores = array();
 
@@ -96,9 +96,9 @@ class AspiranteController
             'correo' => 'El correo electronico es obligatorio.',
         );
 
-        foreach ($obligatorios as $campo => $mensaje) {
+        foreach ($obligatorios as $campo => $textoError) {
             if ($datos[$campo] === '') {
-                $errores[] = $mensaje;
+                $errores[] = $textoError;
             }
         }
 
@@ -149,7 +149,7 @@ class AspiranteController
         return $errores;
     }
 
-    private function fechaEsValida($fecha)
+    private function fechaEsValida(string $fecha): bool
     {
         $tiempo = strtotime($fecha);
 

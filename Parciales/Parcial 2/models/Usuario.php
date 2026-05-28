@@ -1,46 +1,46 @@
 <?php
 
-require_once ROOT_PATH . '/config/Herramientas.php';
+require_once __DIR__ . '/../config/Herramientas.php';
 
-class Usuario
+class ModeloUsuario
 {
-    private $db;
+    private PDO $bd;
 
     public function __construct()
     {
-        $this->db = Herramientas::conectar();
+        $this->bd = BaseDatos::conectar();
     }
 
-    public function existeUsuario($usuario)
+    public function existeUsuario(string $usuario): bool
     {
         $sql = 'SELECT id FROM usuarios WHERE usuario = :usuario LIMIT 1';
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':usuario', $usuario);
         $consulta->execute();
 
         return $consulta->fetch() !== false;
     }
 
-    public function crearAspirante($usuario, $passwordHash)
+    public function crearAspirante(string $usuario, string $contrasenaHash): bool
     {
         $sql = "INSERT INTO usuarios (usuario, password_hash, rol)
                 VALUES (:usuario, :password_hash, 'aspirante')";
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':usuario', $usuario);
-        $consulta->bindValue(':password_hash', $passwordHash);
+        $consulta->bindValue(':password_hash', $contrasenaHash);
 
         return $consulta->execute();
     }
 
-    public function buscarPorUsuario($usuario)
+    public function buscarPorUsuario(string $usuario): ?array
     {
         $sql = 'SELECT id, usuario, password_hash, rol, intentos_fallidos, bloqueado_hasta
                 FROM usuarios
                 WHERE usuario = :usuario
                 LIMIT 1';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':usuario', $usuario);
         $consulta->execute();
 
@@ -49,7 +49,7 @@ class Usuario
         return $resultado === false ? null : $resultado;
     }
 
-    public function aumentarIntentosFallidos($id)
+    public function aumentarIntentosFallidos(int $id): void
     {
         $sql = "UPDATE usuarios
                 SET intentos_fallidos = intentos_fallidos + 1,
@@ -59,19 +59,19 @@ class Usuario
                     END
                 WHERE id = :id";
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
 
-    public function limpiarIntentosFallidos($id)
+    public function limpiarIntentosFallidos(int $id): void
     {
         $sql = 'UPDATE usuarios
                 SET intentos_fallidos = 0,
                     bloqueado_hasta = NULL
                 WHERE id = :id';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
     }

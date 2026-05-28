@@ -1,24 +1,24 @@
 <?php
 
-require_once ROOT_PATH . '/config/Herramientas.php';
+require_once __DIR__ . '/../config/Herramientas.php';
 
-class Aspirante
+class ModeloAspirante
 {
-    private $db;
+    private PDO $bd;
 
     public function __construct()
     {
-        $this->db = Herramientas::conectar();
+        $this->bd = BaseDatos::conectar();
     }
 
-    public function obtenerPorUsuario($usuarioId)
+    public function obtenerPorUsuario(int $usuarioId): ?array
     {
         $sql = 'SELECT *
                 FROM aspirantes
                 WHERE usuario_id = :usuario_id
                 LIMIT 1';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':usuario_id', $usuarioId, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -27,7 +27,7 @@ class Aspirante
         return $resultado === false ? null : $resultado;
     }
 
-    public function guardar($usuarioId, $datos)
+    public function guardar(int $usuarioId, array $datos): bool
     {
         if ($this->obtenerPorUsuario($usuarioId)) {
             return $this->actualizar($usuarioId, $datos);
@@ -36,7 +36,7 @@ class Aspirante
         return $this->insertar($usuarioId, $datos);
     }
 
-    private function insertar($usuarioId, $datos)
+    private function insertar(int $usuarioId, array $datos): bool
     {
         $sql = 'INSERT INTO aspirantes (
                     usuario_id, cedula_pasaporte, nombre, apellido, estado_civil,
@@ -48,7 +48,7 @@ class Aspirante
                     :telefono, :residencia, :correo
                 )';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':usuario_id', $usuarioId, PDO::PARAM_INT);
         $consulta->bindValue(':cedula_pasaporte', $datos['cedula_pasaporte']);
         $consulta->bindValue(':nombre', $datos['nombre']);
@@ -65,7 +65,7 @@ class Aspirante
         return $consulta->execute();
     }
 
-    private function actualizar($usuarioId, $datos)
+    private function actualizar(int $usuarioId, array $datos): bool
     {
         $sql = 'UPDATE aspirantes SET
                     cedula_pasaporte = :cedula_pasaporte,
@@ -81,7 +81,7 @@ class Aspirante
                     correo = :correo
                 WHERE usuario_id = :usuario_id';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':usuario_id', $usuarioId, PDO::PARAM_INT);
         $consulta->bindValue(':cedula_pasaporte', $datos['cedula_pasaporte']);
         $consulta->bindValue(':nombre', $datos['nombre']);
@@ -98,7 +98,7 @@ class Aspirante
         return $consulta->execute();
     }
 
-    public function obtenerTodos()
+    public function obtenerTodos(): array
     {
         $sql = 'SELECT
                     a.id,
@@ -121,20 +121,20 @@ class Aspirante
                 INNER JOIN usuarios u ON u.id = a.usuario_id
                 ORDER BY a.actualizado_en DESC';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->execute();
 
         return $consulta->fetchAll();
     }
 
-    public function obtenerPorId($id)
+    public function obtenerPorId(int $id): ?array
     {
         $sql = 'SELECT id
                 FROM aspirantes
                 WHERE id = :id
                 LIMIT 1';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -143,13 +143,13 @@ class Aspirante
         return $resultado === false ? null : $resultado;
     }
 
-    public function cambiarEstado($id, $estado)
+    public function cambiarEstado(int $id, string $estado): bool
     {
         $sql = 'UPDATE aspirantes
                 SET estado_solicitud = :estado
                 WHERE id = :id';
 
-        $consulta = $this->db->prepare($sql);
+        $consulta = $this->bd->prepare($sql);
         $consulta->bindValue(':estado', $estado);
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
 

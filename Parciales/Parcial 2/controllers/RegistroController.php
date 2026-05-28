@@ -2,19 +2,19 @@
 
 require_once ROOT_PATH . '/models/Usuario.php';
 
-class RegistroController
+class ControladorRegistro
 {
     public function procesar()
     {
-        $title = 'Crear cuenta';
+        $titulo = 'Crear cuenta';
         $errores = array();
         $mensaje = '';
         $usuario = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario = isset($_POST['usuario']) ? trim($_POST['usuario']) : '';
-            $password = isset($_POST['password']) ? $_POST['password'] : '';
-            $confirmarPassword = isset($_POST['confirmar_password']) ? $_POST['confirmar_password'] : '';
+            $contrasena = isset($_POST['password']) ? $_POST['password'] : '';
+            $confirmarContrasena = isset($_POST['confirmar_password']) ? $_POST['confirmar_password'] : '';
 
             if ($usuario === '') {
                 $errores[] = 'El usuario es obligatorio.';
@@ -24,22 +24,22 @@ class RegistroController
                 $errores[] = 'El usuario debe tener entre 4 y 30 caracteres y solo puede usar letras, numeros o guion bajo.';
             }
 
-            if (!$this->passwordEsSeguro($password)) {
+            if (!$this->contrasenasEsSegura($contrasena)) {
                 $errores[] = 'La contrasena debe tener minimo 15 caracteres, letras, numeros y caracteres especiales.';
             }
 
-            if ($password !== $confirmarPassword) {
+            if ($contrasena !== $confirmarContrasena) {
                 $errores[] = 'Las contrasenas no coinciden.';
             }
 
             if (empty($errores)) {
-                $modeloUsuario = new Usuario();
+                $modeloUsuario = new ModeloUsuario();
 
                 if ($modeloUsuario->existeUsuario($usuario)) {
                     $errores[] = 'El usuario ya esta registrado.';
                 } else {
-                    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-                    $creado = $modeloUsuario->crearAspirante($usuario, $passwordHash);
+                    $contrasenaHash = password_hash($contrasena, PASSWORD_DEFAULT);
+                    $creado = $modeloUsuario->crearAspirante($usuario, $contrasenaHash);
 
                     if ($creado) {
                         $mensaje = 'Cuenta creada correctamente. Ahora puedes iniciar sesion.';
@@ -54,15 +54,15 @@ class RegistroController
         require ROOT_PATH . '/views/registro.php';
     }
 
-    private function passwordEsSeguro($password)
+    private function contrasenasEsSegura(string $contrasena): bool
     {
-        if (strlen($password) < 15) {
+        if (strlen($contrasena) < 15) {
             return false;
         }
 
-        $tieneLetra = preg_match('/[a-zA-Z]/', $password);
-        $tieneNumero = preg_match('/[0-9]/', $password);
-        $tieneEspecial = preg_match('/[^a-zA-Z0-9]/', $password);
+        $tieneLetra = preg_match('/[a-zA-Z]/', $contrasena);
+        $tieneNumero = preg_match('/[0-9]/', $contrasena);
+        $tieneEspecial = preg_match('/[^a-zA-Z0-9]/', $contrasena);
 
         return $tieneLetra && $tieneNumero && $tieneEspecial;
     }

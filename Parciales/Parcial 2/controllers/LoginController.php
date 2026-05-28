@@ -2,7 +2,7 @@
 
 require_once ROOT_PATH . '/models/Usuario.php';
 
-class LoginController
+class ControladorAcceso
 {
     public function procesar()
     {
@@ -12,27 +12,27 @@ class LoginController
             exit;
         }
 
-        $title = 'Iniciar sesion';
+        $titulo = 'Iniciar sesion';
         $errores = array();
         $usuario = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $usuario = isset($_POST['usuario']) ? trim($_POST['usuario']) : '';
-            $password = isset($_POST['password']) ? $_POST['password'] : '';
+            $contrasena = isset($_POST['password']) ? $_POST['password'] : '';
 
-            if ($usuario === '' || $password === '') {
+            if ($usuario === '' || $contrasena === '') {
                 $errores[] = 'Usuario y contrasena son obligatorios.';
             }
 
             if (empty($errores)) {
-                $modeloUsuario = new Usuario();
+                $modeloUsuario = new ModeloUsuario();
                 $datosUsuario = $modeloUsuario->buscarPorUsuario($usuario);
 
                 if ($datosUsuario === null) {
                     $errores[] = 'Usuario o contrasena incorrectos.';
                 } elseif ($this->estaBloqueado($datosUsuario['bloqueado_hasta'])) {
                     $errores[] = 'La cuenta esta bloqueada temporalmente. Intenta mas tarde.';
-                } elseif (password_verify($password, $datosUsuario['password_hash'])) {
+                } elseif (password_verify($contrasena, $datosUsuario['password_hash'])) {
                     $modeloUsuario->limpiarIntentosFallidos((int) $datosUsuario['id']);
                     session_regenerate_id(true);
 
@@ -52,7 +52,7 @@ class LoginController
         require ROOT_PATH . '/views/login.php';
     }
 
-    public function logout()
+    public function cerrarSesion()
     {
         $_SESSION = array();
 
@@ -74,7 +74,7 @@ class LoginController
         exit;
     }
 
-    private function estaBloqueado($bloqueadoHasta)
+    private function estaBloqueado(?string $bloqueadoHasta): bool
     {
         if ($bloqueadoHasta === null) {
             return false;
@@ -83,7 +83,7 @@ class LoginController
         return strtotime($bloqueadoHasta) > time();
     }
 
-    private function rutaPorRol($rol)
+    private function rutaPorRol(string $rol): string
     {
         if ($rol === 'rh') {
             return url('rh');

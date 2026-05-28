@@ -1,8 +1,8 @@
 <?php
 
-class Herramientas
+class BaseDatos
 {
-    public static function conectar()
+    public static function conectar(): PDO
     {
         $host = '127.0.0.1';
         $baseDatos = 'parcial2_rh';

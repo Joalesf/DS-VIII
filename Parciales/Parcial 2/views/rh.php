@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="es">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= e(isset($title) ? $title : 'Panel RH') ?></title>
+    <title><?= e(isset($titulo) ? $titulo : 'Panel RH') ?></title>
     <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
     <header class="site-header">
         <a class="brand" href="<?= e(url('inicio')) ?>">Sistema RH</a>
@@ -33,13 +35,13 @@
             </div>
         <?php endif; ?>
 
-        <?php if ($mensaje !== ''): ?>
+        <?php if (!empty($mensaje ?? '')): ?>
             <div class="alert alert-success">
-                <?= e($mensaje) ?>
+                <?= e($mensaje ?? '') ?>
             </div>
         <?php endif; ?>
 
-        <?php if (empty($solicitudes)): ?>
+        <?php if (empty($solicitudes ?? [])): ?>
             <div class="info-panel">
                 <strong>Sin solicitudes</strong>
                 <p>Todavia no hay aspirantes con informacion registrada.</p>
@@ -58,7 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($solicitudes as $solicitud): ?>
+                        <?php foreach (($solicitudes ?? []) as $solicitud): ?>
                             <tr>
                                 <td>
                                     <strong><?= e($solicitud['nombre'] . ' ' . $solicitud['apellido']) ?></strong>
@@ -99,4 +101,5 @@
         <?php endif; ?>
     </main>
 </body>
+
 </html>

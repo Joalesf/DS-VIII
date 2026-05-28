@@ -167,6 +167,34 @@ h1 {
         url("crearcuenta.jpg");
 }
 
+.aspirante-background {
+    min-height: calc(100vh - 72px);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image:
+        linear-gradient(90deg, rgba(12, 24, 38, 0.78), rgba(12, 24, 38, 0.36)),
+        url("iniciarse.jpg");
+}
+
+.aspirante-background .page-title,
+.aspirante-background .page-title h1 {
+    color: #ffffff;
+}
+
+.aspirante-background .page-title p:last-child {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.aspirante-background .alert {
+    max-width: 560px;
+}
+
+.aspirante-background .form-panel {
+    color: var(--text);
+    background: var(--surface);
+}
+
 .auth-content {
     color: #ffffff;
 }

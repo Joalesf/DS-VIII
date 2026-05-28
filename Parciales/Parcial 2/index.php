@@ -9,12 +9,12 @@ ini_set('session.cookie_httponly', '1');
 ini_set('session.cookie_samesite', 'Strict');
 session_start();
 
-function e($value)
+function e(mixed $valor): string
 {
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
 }
 
-function url($ruta = 'inicio')
+function url(string $ruta = 'inicio'): string
 {
     return 'index.php?ruta=' . urlencode($ruta);
 }
@@ -40,32 +40,32 @@ $ruta = isset($_GET['ruta']) ? $_GET['ruta'] : 'inicio';
 switch ($ruta) {
     case '':
     case 'inicio':
-        $controladorInicio = new InicioController();
+        $controladorInicio = new ControladorInicio();
         $controladorInicio->index();
         break;
 
     case 'login':
-        $controladorLogin = new LoginController();
-        $controladorLogin->procesar();
+        $controladorAcceso = new ControladorAcceso();
+        $controladorAcceso->procesar();
         break;
 
     case 'logout':
-        $controladorLogin = new LoginController();
-        $controladorLogin->logout();
+        $controladorAcceso = new ControladorAcceso();
+        $controladorAcceso->cerrarSesion();
         break;
 
     case 'registro':
-        $controladorRegistro = new RegistroController();
+        $controladorRegistro = new ControladorRegistro();
         $controladorRegistro->procesar();
         break;
 
     case 'aspirante':
-        $controladorAspirante = new AspiranteController();
+        $controladorAspirante = new ControladorAspirante();
         $controladorAspirante->index();
         break;
 
     case 'rh':
-        $controladorRh = new RhController();
+        $controladorRh = new ControladorRh();
         $controladorRh->index();
         break;
 

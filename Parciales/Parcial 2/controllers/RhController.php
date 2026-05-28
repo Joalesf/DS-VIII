@@ -2,7 +2,7 @@
 
 require_once ROOT_PATH . '/models/Aspirante.php';
 
-class RhController
+class ControladorRh
 {
     public function index()
     {
@@ -17,10 +17,10 @@ class RhController
             return;
         }
 
-        $title = 'Panel RH';
+        $titulo = 'Panel RH';
         $errores = array();
         $mensaje = '';
-        $modeloAspirante = new Aspirante();
+        $modeloAspirante = new ModeloAspirante();
         $estadosValidos = array('no revisado', 'considerado', 'no considerado');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -1,0 +1,125 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #edf2f7;
+    color: #1f2937;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.contenedor {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: 24px;
+}
+
+.panel {
+    width: min(100%, 440px);
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(31, 41, 55, 0.12);
+}
+
+.encabezado {
+    margin-bottom: 24px;
+}
+
+.encabezado p {
+    margin: 0 0 6px;
+    color: #0f766e;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.formulario {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    font-weight: 700;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 6px;
+    font: inherit;
+}
+
+input,
+select {
+    padding: 9px 11px;
+    border: 1px solid #b8c2d1;
+    background: #ffffff;
+}
+
+input:focus,
+select:focus {
+    border-color: #0f766e;
+    outline: 3px solid rgba(15, 118, 110, 0.18);
+}
+
+button {
+    margin-top: 8px;
+    border: 0;
+    background: #0f766e;
+    color: #ffffff;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+button:hover {
+    background: #115e59;
+}
+
+.resultado {
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 6px;
+}
+
+.resultado span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+}
+
+.resultado strong {
+    display: block;
+    overflow-wrap: anywhere;
+    font-size: 1.35rem;
+}
+
+.exito {
+    background: #ecfdf5;
+    border: 1px solid #99f6e4;
+    color: #134e4a;
+}
+
+.error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+.servicio {
+    margin: 18px 0 0;
+    color: #64748b;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
